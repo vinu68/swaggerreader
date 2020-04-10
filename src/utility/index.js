@@ -40,7 +40,7 @@ function getEndPointVerb(endpoint, verbType, parameter = null) {
 
 function genearteParameterBody(parameters, definitions) {
 	let paramData = {};
-	console.log('param', parameters);
+	
 	switch (parameters['in']) {
 		case 'body': {
 			paramData.name = 'body';

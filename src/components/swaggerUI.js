@@ -1,29 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import swaggerData from '../data/swagger.json';
 import SwaggerAPIPlayground from './playground';
+import SwaggerAPIDetails from './swaggerDetails';
 import { getEndPoints, getEndPoint, getEndPointVerb, genearteParameterBody } from '../utility';
 
 const SwaggerUI = () => {
 	const [endpoints, setEndpoints] = useState([]);
+	const [endpoint, setEndpoint] = useState([]);
+	const [endpointPostVerbData, setendpointPostVerbData] = useState([]);
+	const [endpointPostVerbDataParams, setendpointPostVerbParams] = useState([]);
+	const [endpointParamtersBody, setendpointParamtersBody] = useState([]);
+	let paths = swaggerData['paths'];
+	let definitions = swaggerData['definitions'];
+	let verb = 'post';
+	let endpointPath = '/pet';
+	let baseUrl = 'http://' + swaggerData['host'] + swaggerData['basePath'];
 
 	useEffect(() => {
 		setEndpoints(getEndPoints(paths));
 	}, []);
+	useEffect(() => {
+		setEndpoint(getEndPoint(endpoints, endpointPath));
+	}, [endpoints, endpointPath]);
 
-	let paths = swaggerData['paths'];
-	let definitions = swaggerData['definitions'];
-	//let endpoints = getEndPoints(paths);
-	let petAPI = getEndPoint(endpoints, '/pet');
-	let petAPIPostVerbData = getEndPointVerb(petAPI, 'post');
-	let petAPIPostVerbParams = getEndPointVerb(petAPI, 'post', true);
-	let createAPIParamtersBody = genearteParameterBody(petAPIPostVerbParams, definitions);
-	console.log(createAPIParamtersBody);
+	useEffect(() => {
+		if (endpoint.length) {
+			setendpointPostVerbData(getEndPointVerb(endpoint, verb));
+			setendpointPostVerbParams(getEndPointVerb(endpoint, verb, true));
+		}
+	}, [endpoint, verb]);
+	useEffect(() => {
+		if (Object.keys(endpointPostVerbDataParams).length) {
+			setendpointParamtersBody(genearteParameterBody(endpointPostVerbDataParams, definitions));
+		}
+	}, [endpointPostVerbDataParams, definitions]);
+
+	console.log('endpointPostVerbData', endpointParamtersBody);
+
 	return (
-		<div className='container'>
-			<div className='row'>
-				<div className='col-sm-6'>Details</div>
-				<div className='col-sm-6'>{<SwaggerAPIPlayground />}</div>
-			</div>
+		<div className='container border'>
+			<SwaggerAPIDetails verbData={endpointPostVerbData} endPoint={endpointPath.slice(1)} />
+			<SwaggerAPIPlayground
+				parameters={endpointParamtersBody}
+				verb={verb}
+				baseUrl={baseUrl}
+				endpointPath={endpointPath}
+			/>
 		</div>
 	);
 };
