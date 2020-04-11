@@ -40,13 +40,15 @@ function getEndPointVerb(endpoint, verbType, parameter = null) {
 
 function genearteParameterBody(parameters, definitions) {
 	let paramData = {};
-	
+
 	switch (parameters['in']) {
 		case 'body': {
 			paramData.name = 'body';
 			paramData.type = 'body';
 			paramData.description = parameters['description'];
 			paramData.model = generateModel(parameters['schema'], definitions);
+			paramData.modalSchema = [];
+			paramData.modalSchema = generateSchema(parameters['schema'], definitions);
 			break;
 		}
 		case 'query': {
@@ -54,6 +56,9 @@ function genearteParameterBody(parameters, definitions) {
 			paramData.type = parameters['type'];
 			paramData.description = parameters['description'];
 			paramData.model = '';
+			paramData.modalSchema = [];
+			paramData.modalSchema.name = parameters['name'];
+			paramData.modalSchema.data.description = parameters['description'];
 			break;
 		}
 		case 'path': {
@@ -61,6 +66,7 @@ function genearteParameterBody(parameters, definitions) {
 			paramData.type = parameters['type'];
 			paramData.description = parameters['description'];
 			paramData.model = '';
+			paramData.modalSchema = generateParamsSchema();
 			break;
 		}
 		default:
@@ -119,6 +125,46 @@ function generateModel(paramScehema, definitions) {
 		});
 		return jsonData;
 	}
+}
+
+function generateSchema(paramScehema, definitions) {
+	
+	if (paramScehema) {
+		let referenceSplit = [];
+		referenceSplit =
+			'items' in paramScehema ? paramScehema['items']['$ref'].split('/') : paramScehema['$ref'].split('/');
+		let schemaName = referenceSplit[referenceSplit.length - 1];
+
+		let modelParams = definitions[schemaName]['properties'];
+		let defintionData = [];
+		defintionData[schemaName] = [];
+
+		let data = Object.keys(modelParams).map((param, index) => {
+			let json = {};
+			if ('$ref' in modelParams[param]) {
+				json.name = param;
+				json.data = '';
+				defintionData[schemaName].push(json);
+				defintionData[param] = generateSchema(modelParams[param], definitions);
+			} else if ('items' in modelParams[param] && '$ref' in modelParams[param].items) {
+				json.name = param;
+				json.data = '';
+				defintionData[schemaName].push(json);
+				defintionData[param] = generateSchema(modelParams[param].items, definitions);
+			} else {
+				json.name = param;
+				json.data = modelParams[param];
+				defintionData[schemaName].push(json);
+			}
+			return null;
+		});
+		
+		return defintionData;
+	}
+}
+
+function generateParamsSchema() {
+	return null;
 }
 
 export { getEndPoints, getEndPoint, getVerbs, getEndPointVerb, generateModel, setParamValues, genearteParameterBody };

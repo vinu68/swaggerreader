@@ -39,7 +39,11 @@ const SwaggerUI = () => {
 
 	return (
 		<div className='container border'>
-			<SwaggerAPIDetails verbData={endpointPostVerbData} endPoint={endpointPath.slice(1)} />
+			<SwaggerAPIDetails
+				verbData={endpointPostVerbData}
+				endPoint={endpointPath.slice(1)}
+				schema={endpointParamtersBody.modalSchema}
+			/>
 			<SwaggerAPIPlayground
 				parameters={endpointParamtersBody}
 				verb={verb}
