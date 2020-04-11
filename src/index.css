@@ -106,3 +106,37 @@ body {
   min-height: 40px;
   font-size: 1rem;
 }
+
+.code-placeholder__authValue_apikey,
+.code-placeholder__authValue_basicauth {
+  margin-top: 20px;
+  display: flex;
+}
+
+.code-placeholder__authValue_input {
+  flex: 1 50%;
+  padding: 10px;
+  margin: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.dropdown {
+  padding: 5px 10px;
+  min-width: 150px;
+  min-height: 40px;
+  font-size: 1rem;
+}
+
+[type='text'] {
+  padding: 5px 10px;
+  min-width: 100px;
+  min-height: 20px;
+  font-size: 1rem;
+}
