@@ -137,6 +137,18 @@ const SwaggerAPIDetails = (props) => {
 						?<Fragment>
 							<div className='data-table__title'>Response:</div>
 							<div className='data-table__wrapper'>
+								<div className='data-table__row'>
+									<div className='flex-50 '>
+										<div className='content'>
+											<div className='data-table__subtitle'>Code</div>
+										</div>
+									</div>
+									<div className='flex-50 '>
+										<div className='content'>
+											<div className='data-table__subtitle'>Description</div>
+										</div>
+									</div>
+								</div>
 								<Responses responses={props.responses}/>
 							</div>
 						</Fragment>

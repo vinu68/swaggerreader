@@ -19,9 +19,6 @@ const SwaggerUI = (props) => {
 		endpointPath = '/'+props.match.params.type
 		verb = props.match.params.method
 	}
-	console.log("endpointPath >", endpointPath);
-	console.log("verb >", verb);
-	console.log("response", swaggerData['paths'][endpointPath]);
 	let response = swaggerData['paths'][endpointPath] && swaggerData['paths'][endpointPath][verb] 
 	? swaggerData['paths'][endpointPath][verb]['responses'] 
 	: swaggerData['paths'][endpointPath] 
