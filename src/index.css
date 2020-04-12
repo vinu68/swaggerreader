@@ -29,6 +29,14 @@ body {
   color: white;
 }
 
+.content-url{
+  background-color: #61affe;
+  background: rgba(97, 175, 254, .1);
+  border: 1px solid #ccc;
+  padding: 15px 20px;
+  margin-top: 20px;
+}
+
 .content {
   padding: 16px;
 }

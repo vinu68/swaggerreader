@@ -41,14 +41,20 @@ function getEndPointVerb(endpoint, verbType, parameter = null) {
 function genearteParameterBody(parameters, definitions) {
 	let paramData = {};
 	console.log("parameters :", parameters);
+	let schema;
+	if(parameters['schema']){
+		schema = parameters['schema']
+	} else {
+		schema = parameters
+	}
 	switch (parameters['in']) {
 		case 'body': {
 			paramData.name = 'body';
 			paramData.type = 'body';
 			paramData.description = parameters['description'];
-			paramData.model = generateModel(parameters['schema'], definitions);
+			paramData.model = generateModel(schema, definitions);
 			paramData.modalSchema = [];
-			paramData.modalSchema = generateSchema(parameters['schema'], definitions);
+			paramData.modalSchema = generateSchema(schema, definitions);
 			break;
 		}
 		case 'query': {
@@ -56,7 +62,7 @@ function genearteParameterBody(parameters, definitions) {
 			paramData.type = parameters['type'];
 			paramData.description = parameters['description'];
 			paramData.model = '';
-			paramData.modalSchema = [];
+			paramData.modalSchema = {};
 			paramData.modalSchema.name = parameters['name'];
 			paramData.modalSchema.data.description = parameters['description'];
 			break;
@@ -69,8 +75,18 @@ function genearteParameterBody(parameters, definitions) {
 			paramData.modalSchema = generateParamsSchema();
 			break;
 		}
-		default:
+		default:{
+			paramData.type = parameters['type'];
+			paramData.description = parameters['description'];
+			paramData.model = parameters
+			paramData.modalSchema = {}
+			paramData.modalSchema.default = []
+			paramData.modalSchema.default.push({
+				name:parameters['name'],
+				data: parameters
+			})
 			break;
+		}
 	}
 	return paramData;
 }
