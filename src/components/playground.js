@@ -46,9 +46,12 @@ const SwaggerAPIPlayground = (props) => {
 	// }, [curlrequest]);
 
 	useEffect(() => {
+		console.log('authType', authType);
+		console.log('apiusername', apiusername);
+		console.log('apipassword', apipassword);
 		let curlrequest = `curl --request ` + props.verb.toUpperCase();
-		if (authType && authType === 'apikey') {
-			curlrequest = curlrequest + ` -u` + apiusername + `:` + apipassword;
+		if (authType && authType === 'basicauth  ') {
+			curlrequest = curlrequest + ` -u ` + apiusername + `:` + apipassword;
 		}
 		curlrequest =
 			curlrequest +
@@ -65,7 +68,7 @@ const SwaggerAPIPlayground = (props) => {
 		}
 		//setcurlRequest(updatedcurlrequest);
 		setcurlRequest(curlrequest);
-	}, [bodyText, authType, keyvalue, apiusername, apipassword, apiresponse]);
+	}, [props, bodyText, authType, keyvalue, apiusername, apipassword, apiresponse]);
 
 	function handleBodyTextChange(e) {
 		let value = e.currentTarget.value;
