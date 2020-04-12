@@ -1,13 +1,10 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import PR from 'code-prettify';
-console.log(PR);
+import ReactJson from 'react-json-view';
 
 const SwaggerAPIPlayground = (props) => {
 	useEffect(() => {
-		document.addEventListener('load', function () {
-			PR.prettyPrint();
-		});
+		//PR.prettyPrint();
 	}, []);
 	function callApiEndPoint() {
 		console.log('api nd point called');
@@ -19,6 +16,7 @@ const SwaggerAPIPlayground = (props) => {
 			console.log('response', response);
 		});
 	}
+	let model = props.parameters && props.parameters.model;
 	return (
 		<div className='flex-50 dark h100'>
 			<div className='content'>
@@ -32,7 +30,8 @@ const SwaggerAPIPlayground = (props) => {
 				<div className='code'>
 					<div className='code-label'>Parameters</div>
 					<div className='code-placeholder'>
-						<pre className='prettyprint lang-js'>{props.parameters && JSON.stringify(props.parameters.model)}</pre>
+						<ReactJson src={model} theme='monokai' />
+						
 					</div>
 				</div>
 

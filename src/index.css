@@ -60,18 +60,30 @@ body {
 
 }
 
+.data-table__wrapper{
+  background-color: #ccc;
+  margin-top: 20px;
+}
+
 .data-table__title {
   font-size: 1.5rem;
   line-height: 36px;
   padding: 8px;
-  border-bottom: 1px dashed #ccc;
+  border-bottom: 1px dashed #999;
 }
 
 .data-table__subtitle {
   font-size: .875rem;
   line-height: 20px;
   padding: 8px;
-  border-bottom: 1px dashed #ccc;
+  border-bottom: 1px dashed #999;
+  font-weight: bold;
+}
+
+.data-table__data {
+  font-size: .875rem;
+  line-height: 20px;
+  padding: 8px;
 }
 
 .data-table__row {

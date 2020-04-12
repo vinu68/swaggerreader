@@ -10,7 +10,6 @@ const SwaggerUI = (props) => {
 	const [endpointPostVerbData, setendpointPostVerbData] = useState([]);
 	const [endpointPostVerbDataParams, setendpointPostVerbParams] = useState([]);
 	const [endpointParamtersBody, setendpointParamtersBody] = useState([]);
-	console.log("props:",props.match.params.type);
 	
 	let paths = swaggerData['paths'];
 	let definitions = swaggerData['definitions'];
@@ -24,7 +23,7 @@ const SwaggerUI = (props) => {
 
 	useEffect(() => {
 		setEndpoints(getEndPoints(paths));
-	}, []);
+	}, [paths]);
 	useEffect(() => {
 		setEndpoint(getEndPoint(endpoints, endpointPath));
 	}, [endpoints, endpointPath]);
@@ -41,11 +40,13 @@ const SwaggerUI = (props) => {
 		}
 	}, [endpointPostVerbDataParams, definitions]);
 
-	console.log('endpointPostVerbData', endpointParamtersBody);
-
 	return (
 		<div className='container border'>
-			<SwaggerAPIDetails verbData={endpointPostVerbData} endPoint={endpointPath.slice(1)} />
+			<SwaggerAPIDetails
+				verbData={endpointPostVerbData}
+				endPoint={endpointPath.slice(1)}
+				schema={endpointParamtersBody.modalSchema}
+			/>
 			<SwaggerAPIPlayground
 				parameters={endpointParamtersBody}
 				verb={verb}
