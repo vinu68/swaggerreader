@@ -61,7 +61,8 @@ body {
 }
 
 .data-table__wrapper{
-  background-color: #ccc;
+  background-color: #61affe;
+  background: rgba(97, 175, 254, .1);
   margin-top: 20px;
 }
 
