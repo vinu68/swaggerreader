@@ -40,12 +40,12 @@ function getEndPointVerb(endpoint, verbType, parameter = null) {
 
 function genearteParameterBody(parameters, definitions) {
 	let paramData = {};
-	console.log("parameters :", parameters);
+	console.log('parameters :', parameters);
 	let schema;
-	if(parameters['schema']){
-		schema = parameters['schema']
+	if (parameters['schema']) {
+		schema = parameters['schema'];
 	} else {
-		schema = parameters
+		schema = parameters;
 	}
 	switch (parameters['in']) {
 		case 'body': {
@@ -75,16 +75,16 @@ function genearteParameterBody(parameters, definitions) {
 			paramData.modalSchema = generateParamsSchema();
 			break;
 		}
-		default:{
+		default: {
 			paramData.type = parameters['type'];
 			paramData.description = parameters['description'];
-			paramData.model = parameters
-			paramData.modalSchema = {}
-			paramData.modalSchema.default = []
+			paramData.model = parameters;
+			paramData.modalSchema = {};
+			paramData.modalSchema.default = [];
 			paramData.modalSchema.default.push({
-				name:parameters['name'],
-				data: parameters
-			})
+				name: parameters['name'],
+				data: parameters,
+			});
 			break;
 		}
 	}
@@ -144,7 +144,6 @@ function generateModel(paramScehema, definitions) {
 }
 
 function generateSchema(paramScehema, definitions) {
-	
 	if (paramScehema) {
 		let referenceSplit = [];
 		referenceSplit =
@@ -174,7 +173,7 @@ function generateSchema(paramScehema, definitions) {
 			}
 			return null;
 		});
-		
+
 		return defintionData;
 	}
 }
@@ -182,5 +181,37 @@ function generateSchema(paramScehema, definitions) {
 function generateParamsSchema() {
 	return null;
 }
+function generateNodejsCodeSnippet(jsonData) {
+	let codesnippet = `var request = require('request');
+	var options = {
+	  'method': '${jsonData.verb}',
+	  'url': '${jsonData.url}',`;
 
-export { getEndPoints, getEndPoint, getVerbs, getEndPointVerb, generateModel, setParamValues, genearteParameterBody };
+	codesnippet =
+		codesnippet +
+		`'headers': {
+		'Content-Type': 'application/json'
+	  },`;
+
+	codesnippet =
+		codesnippet +
+		`body: ${JSON.stringify(jsonData.body)}
+	};
+	request(options, function (error, response) { 
+	  if (error) throw new Error(error);
+	  console.log(response.body);
+	});`;
+
+	return encodeURIComponent(codesnippet);
+}
+
+export {
+	getEndPoints,
+	getEndPoint,
+	getVerbs,
+	getEndPointVerb,
+	generateModel,
+	setParamValues,
+	genearteParameterBody,
+	generateNodejsCodeSnippet,
+};

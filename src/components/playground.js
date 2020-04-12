@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, Fragment } from 'react';
 import axios from 'axios';
 import ReactJson from 'react-json-view';
 import Prism from 'prismjs';
+import { generateNodejsCodeSnippet } from '../utility';
 require('prismjs/plugins/line-numbers/prism-line-numbers.js');
 require('prismjs/themes/prism-coy.css');
 
@@ -115,6 +116,19 @@ const SwaggerAPIPlayground = (props) => {
 	}
 	//console.log('curlRequest', curlRequest);
 	console.log('updated request', curlRequest);
+
+	let nodeSnippetData = {
+		url: 'http://petstore.swagger.io/v2/pet',
+		verb: 'POST',
+		body: {
+			id: 0,
+			category: { id: 0, name: 'string' },
+			name: 'doggie',
+			photoUrls: ['string'],
+			tags: [{ id: 0, name: 'string' }],
+			status: 'available',
+		},
+	};
 
 	return (
 		<div className='flex-50 dark h100'>
@@ -252,6 +266,14 @@ const SwaggerAPIPlayground = (props) => {
 						<button type='submit' className='app-btn' onClick={callApiEndPoint}>
 							Try Request!
 						</button>
+						<pre className='language-js line-numbers'>
+							<code
+								className='language-js'
+								dangerouslySetInnerHTML={{
+									__html: decodeURIComponent(generateNodejsCodeSnippet(nodeSnippetData))
+								}}
+							/>
+						</pre>
 					</div>
 					<div className={apiresponse ? 'code-placeholder mt-20' : 'code-placeholder mt-20 hidden'}>
 						<pre className='language-js line-numbers'>
