@@ -22,7 +22,11 @@ const SwaggerUI = (props) => {
 	console.log("endpointPath >", endpointPath);
 	console.log("verb >", verb);
 	console.log("response", swaggerData['paths'][endpointPath]);
-	let response = swaggerData['paths'][endpointPath][verb] ? swaggerData['paths'][endpointPath][verb]['responses'] : swaggerData['paths'][endpointPath]['data'][0]['data']['responses']
+	let response = swaggerData['paths'][endpointPath] && swaggerData['paths'][endpointPath][verb] 
+	? swaggerData['paths'][endpointPath][verb]['responses'] 
+	: swaggerData['paths'][endpointPath] 
+		? swaggerData['paths'][endpointPath]['data'][0]['data']['responses'] 
+		: null
 	let baseUrl = 'http://' + swaggerData['host'] + swaggerData['basePath'];
 
 	useEffect(() => {
